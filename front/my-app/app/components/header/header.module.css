@@ -1,0 +1,118 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* 좌측 로고 및 메뉴 */
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--text-main);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logoAccent {
+  color: var(--primary-accent);
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--text-main);
+}
+
+/* 중앙 검색창 */
+.searchSection {
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-sub);
+  color: var(--text-main);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--primary-accent);
+}
+
+/* 우측 유틸리티 & 버튼 */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.signInBtn {
+  text-decoration: none;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  transition: background-color 0.15s ease;
+}
+
+.signInBtn:hover {
+  background-color: var(--bg-sub);
+}
+
+.signUpBtn {
+  text-decoration: none;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: #ffffff;
+  background-color: var(--primary-accent);
+  transition: opacity 0.15s ease;
+}
+
+.signUpBtn:hover {
+  opacity: 0.9;
+}
