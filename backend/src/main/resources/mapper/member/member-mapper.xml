@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+	<!-- MEMBER 테이블 컬럼과 Member VO 필드 간 1:1 매핑 -->
+	<resultMap id="memberResultMap" type="com.coca.backend.domain.member.vo.Member">
+	    <id property="userNo" column="USER_NO" />
+	    <result property="authority" column="AUTHORITY" />
+	    <result property="userEmail" column="USER_EMAIL" />
+	    <result property="userId" column="USER_ID" />
+	    <result property="userPwd" column="USER_PWD" />
+	    <result property="userName" column="USER_NAME" />
+	    <result property="userAddress" column="USER_ADDRESS" />
+	    <result property="userPhone" column="USER_PHONE" />
+	    <result property="userEnrollDate" column="USER_ENROLL_DATE" />
+	    <result property="userDeleteYn" column="USER_DELETE_YN" />
+	    <result property="likeCount" column="LIKE_COUNT" />
+	    <result property="noPayCount" column="NO_PAY_COUNT" />
+	    <result property="userStatus" column="USER_STATUS" />
+	    <result property="userPoint" column="USER_POINT" />
+	</resultMap>
+	
+	<!-- STREAMING_CHUNK:Writing duplicate count queries... -->
+	<!-- 1. 아이디 중복 확인 -->
+	<select id="selectCountByUserId" parameterType="string" resultType="int">
+	    SELECT COUNT(*)
+	    FROM MEMBER
+	    WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 2. 이메일 중복 확인 (입력된 경우에만 호출) -->
+	<select id="selectCountByEmail" parameterType="string" resultType="int">
+	    SELECT COUNT(*)
+	    FROM MEMBER
+	    WHERE USER_EMAIL = #{email}
+	</select>
+	
+	<!-- STREAMING_CHUNK:Writing member insert statement with sequence key... -->
+	<!-- 3. 회원가입: SEQ_USER_NO 채번 후 객체에 세팅, null 허용 컬럼은 jdbcType 명시 -->
+	<insert id="insertMember" parameterType="com.coca.backend.domain.member.vo.Member">
+	    <selectKey keyProperty="userNo" resultType="long" order="BEFORE">
+	        SELECT SEQ_USER_NO.NEXTVAL FROM DUAL
+	    </selectKey>
+	    INSERT INTO MEMBER (
+	        USER_NO,
+	        AUTHORITY,
+	        USER_EMAIL,
+	        USER_ID,
+	        USER_PWD,
+	        USER_NAME,
+	        USER_ADDRESS,
+	        USER_PHONE,
+	        USER_ENROLL_DATE,
+	        USER_DELETE_YN,
+	        LIKE_COUNT,
+	        NO_PAY_COUNT,
+	        USER_STATUS,
+	        USER_POINT
+	    ) VALUES (
+	        #{userNo},
+	        NVL(#{authority}, 1),
+	        #{userEmail, jdbcType=VARCHAR},
+	        #{userId},
+	        #{userPwd},
+	        #{userName},
+	        #{userAddress, jdbcType=VARCHAR},
+	        #{userPhone, jdbcType=VARCHAR},
+	        SYSDATE,
+	        'N',
+	        0,
+	        0,
+	        'N',
+	        NVL(#{userPoint}, 0)
+	    )
+	</insert>
+	
+	<!-- STREAMING_CHUNK:Writing select member by user ID query... -->
+	<!-- 4. 로그인 및 회원 조회 -->
+	<select id="selectByUserId" parameterType="string" resultMap="memberResultMap">
+	    SELECT
+	        USER_NO,
+	        AUTHORITY,
+	        USER_EMAIL,
+	        USER_ID,
+	        USER_PWD,
+	        USER_NAME,
+	        USER_ADDRESS,
+	        USER_PHONE,
+	        USER_ENROLL_DATE,
+	        USER_DELETE_YN,
+	        LIKE_COUNT,
+	        NO_PAY_COUNT,
+	        USER_STATUS,
+	        USER_POINT
+	    FROM MEMBER
+	    WHERE USER_ID = #{userId}
+	</select>
+</mapper>
