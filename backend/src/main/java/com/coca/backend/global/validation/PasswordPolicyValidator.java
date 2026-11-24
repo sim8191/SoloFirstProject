@@ -13,6 +13,8 @@ public final class PasswordPolicyValidator {
     private static final Pattern ALLOWED_CHARS = Pattern.compile(
             "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};:,./?~]+$"
     );
+    // 숫자 포함 여부 검증
+    private static final Pattern NUMBER = Pattern.compile("[0-9]");
     
     private PasswordPolicyValidator() {
     }
@@ -29,8 +31,10 @@ public final class PasswordPolicyValidator {
             return "비밀번호는 필수입니다.";
         }
 
+        // 비밀번호 길이 검증
         if (password.length() < MIN_LENGTH || password.length() > MAX_LENGTH) {
-            return "비밀번호는 8자 이상 16자 이하여야 합니다.";
+            return "비밀번호는 " + MIN_LENGTH
+                    + "자 이상 " + MAX_LENGTH + "자 이하여야 합니다.";
         }
 
         if (EXCLUDED_CHARS.matcher(password).find()) {
@@ -51,6 +55,10 @@ public final class PasswordPolicyValidator {
 
         if (!SPECIAL_CHAR.matcher(password).find()) {
             return "비밀번호에 특수문자(!@#$%^&* 등)를 포함해야 합니다.";
+        }
+        
+        if (!NUMBER.matcher(password).find()) {
+            return "비밀번호에 숫자를 포함해야 합니다.";
         }
 
         return null;

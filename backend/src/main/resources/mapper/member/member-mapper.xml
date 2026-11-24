@@ -35,21 +35,22 @@
 	    WHERE USER_EMAIL = #{email}
 	</select>
 	
-	<!-- STREAMING_CHUNK:Writing member insert statement with sequence key... -->
-	<!-- 3. 회원가입: SEQ_USER_NO 채번 후 객체에 세팅, null 허용 컬럼은 jdbcType 명시 -->
-	<insert id="insertMember" parameterType="com.coca.backend.domain.member.vo.Member">
-	    <selectKey keyProperty="userNo" resultType="long" order="BEFORE">
+	<!-- 3. 회원가입: 기본 회원정보만 등록 -->
+	<insert id="insertMember"
+	        parameterType="com.coca.backend.domain.member.vo.Member">
+	
+	    <!-- Oracle 시퀀스로 회원번호 생성 -->
+	    <selectKey keyProperty="userNo"
+	               resultType="long"
+	               order="BEFORE">
 	        SELECT SEQ_USER_NO.NEXTVAL FROM DUAL
 	    </selectKey>
 	    INSERT INTO MEMBER (
 	        USER_NO,
 	        AUTHORITY,
-	        USER_EMAIL,
 	        USER_ID,
 	        USER_PWD,
 	        USER_NAME,
-	        USER_ADDRESS,
-	        USER_PHONE,
 	        USER_ENROLL_DATE,
 	        USER_DELETE_YN,
 	        LIKE_COUNT,
@@ -59,12 +60,9 @@
 	    ) VALUES (
 	        #{userNo},
 	        NVL(#{authority}, 1),
-	        #{userEmail, jdbcType=VARCHAR},
 	        #{userId},
 	        #{userPwd},
 	        #{userName},
-	        #{userAddress, jdbcType=VARCHAR},
-	        #{userPhone, jdbcType=VARCHAR},
 	        SYSDATE,
 	        'N',
 	        0,
@@ -72,6 +70,7 @@
 	        'N',
 	        NVL(#{userPoint}, 0)
 	    )
+	
 	</insert>
 	
 	<!-- STREAMING_CHUNK:Writing select member by user ID query... -->

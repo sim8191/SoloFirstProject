@@ -1,7 +1,5 @@
 package com.coca.backend.domain.member.service;
 
-import java.util.regex.Pattern;
-
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +24,6 @@ public class MemberServiceImpl implements MemberService {
 	private static final String LOGIN_CREDENTIAL_MISMATCH_MESSAGE =
             "아이디 혹은 비밀번호가 일치하지 않습니다.";
 
-    private static final Pattern PHONE_PATTERN =
-            Pattern.compile("^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$");
-	
 	private void validateSignUpRequest(MemberSignUpRequest request) {
 		if(request == null) {
 			throw new IllegalArgumentException("회원가입 요청값이 없습니다.");
@@ -38,29 +33,24 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("아이디는 필수입니다.");
         }
 
-        PasswordPolicyValidator.validate(request.getPasswordConfirm());
+		// 실제 비밀번호 정책 검증
+		PasswordPolicyValidator.validate(request.getUserPwd());
 
-        if (request.getPasswordConfirm() == null || request.getPasswordConfirm().isBlank()) {
-            throw new IllegalArgumentException("비밀번호 확인은 필수입니다.");
-        }
+		// 비밀번호 확인 필수 검사
+		if (request.getPasswordConfirm() == null
+		        || request.getPasswordConfirm().isBlank()) {
+		    throw new IllegalArgumentException("비밀번호 확인은 필수입니다.");
+		}
 
-        if (!request.getPasswordConfirm().equals(request.getPasswordConfirm())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+		// 실제 비밀번호와 확인 비밀번호 비교
+		if (!request.getUserPwd().equals(request.getPasswordConfirm())) {
+		    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+		}
 
         if (request.getUserName() == null || request.getUserName().isBlank()) {
             throw new IllegalArgumentException("이름은 필수입니다.");
         }
-
-        String phone = normalizePhone(request.getUserPhone());
-        if (!PHONE_PATTERN.matcher(phone).matches()) {
-            throw new IllegalArgumentException("올바른 휴대전화 번호 형식이 아닙니다.");
-        }
 	}
-	
-	private String normalizePhone(String rawPhone) {
-        return rawPhone.trim().replaceAll("\\s+", "");
-    }
 	
 	
 	@Override
@@ -69,19 +59,9 @@ public class MemberServiceImpl implements MemberService {
         // 1. 기본 유효성 및 정규식 검증
         validateSignUpRequest(request);
 
-        // 2. 이메일 정규화 (대소문자 통일 및 공백 제거)
-        String email = normalizeEmail(request.getUserEmail());
-
         // 3. 아이디 중복 검사
         if (memberDao.selectCountByUserId(request.getUserId()) > 0) {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
-        }
-
-        // 4. 이메일 중복 검사
-        if (email != null && !email.isBlank()) {
-            if (memberDao.selectCountByEmail(email) > 0) {
-                throw new IllegalArgumentException("이미 가입된 이메일입니다.");
-            }
         }
 
         // 5. DB 저장을 위한 Member 엔티티 생성 (평문 비번, 권한 1, 포인트 0)[cite: 1]
@@ -89,8 +69,6 @@ public class MemberServiceImpl implements MemberService {
                 .userId(request.getUserId().trim())
                 .userPwd(request.getUserPwd())
                 .userName(request.getUserName().trim())
-                .userEmail(email)
-                .userPhone(normalizePhone(request.getUserPhone()))
                 .authority(1)    
                 .userPoint(0L)   
                 .build();
@@ -140,10 +118,4 @@ public class MemberServiceImpl implements MemberService {
                 .userPoint(member.getUserPoint())
                 .build();
     }
-
-    // (기존 코드 하단에 추가) 이메일 정규화 헬퍼 메서드
-    private String normalizeEmail(String email) {
-        return (email != null) ? email.trim().toLowerCase() : null;
-    }
-	
 }
