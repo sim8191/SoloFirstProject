@@ -13,6 +13,4 @@ public class MemberSignUpRequest {
     private String userPwd;
     private String passwordConfirm;
     private String userName;
-    private String userEmail;
-    private String userPhone;
 }

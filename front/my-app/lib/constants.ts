@@ -9,8 +9,8 @@ export const API_BASE_URL =
 // 2. 주요 API 엔드포인트 모음
 export const API_ENDPOINTS = {
   AUTH: {
-    SIGN_UP: `${API_BASE_URL}/api/member/signup`,
-    SIGN_IN: `${API_BASE_URL}/api/member/signin`,
+    SIGN_UP: `${API_BASE_URL}/api/member/sign-up`,
+    SIGN_IN: `${API_BASE_URL}/api/member/sign-in`,
   },
   MEMBER: {
     CHECK_ID: `${API_BASE_URL}/api/member/check-id`,
