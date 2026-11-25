@@ -53,19 +53,17 @@
 	        USER_NAME,
 	        USER_ENROLL_DATE,
 	        USER_DELETE_YN,
-	        LIKE_COUNT,
 	        NO_PAY_COUNT,
 	        USER_STATUS,
 	        USER_POINT
 	    ) VALUES (
 	        #{userNo},
-	        NVL(#{authority}, 1),
+	        NVL(#{authority}, 3),
 	        #{userId},
 	        #{userPwd},
 	        #{userName},
 	        SYSDATE,
 	        'N',
-	        0,
 	        0,
 	        'N',
 	        NVL(#{userPoint}, 0)

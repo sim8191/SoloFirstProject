@@ -14,9 +14,6 @@ export default function SignUpPage() {
     userPwd: "",
     passwordConfirm: "",
     userName: "",
-    userEmail: "",
-    userPhone: "",
-    userAddress: "",
   });
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -57,14 +54,6 @@ export default function SignUpPage() {
       errors.userName = VALIDATION_MESSAGES.USER_NAME.REQUIRED;
     }
 
-    if (formData.userEmail.trim() && !REGEX.EMAIL.test(formData.userEmail.trim())) {
-      errors.userEmail = VALIDATION_MESSAGES.EMAIL.INVALID;
-    }
-
-    if (formData.userPhone.trim() && !REGEX.PHONE.test(formData.userPhone.trim())) {
-      errors.userPhone = VALIDATION_MESSAGES.PHONE.INVALID;
-    }
-
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -84,9 +73,6 @@ export default function SignUpPage() {
         userPwd: formData.userPwd,
         passwordConfirm: formData.passwordConfirm,
         userName: formData.userName.trim(),
-        userEmail: formData.userEmail.trim() || null,
-        userPhone: formData.userPhone.trim() || null,
-        userAddress: formData.userAddress.trim() || null,
       };
 
       const response = await fetch(API_ENDPOINTS.AUTH.SIGN_UP, {
@@ -189,48 +175,7 @@ export default function SignUpPage() {
             />
             {fieldErrors.userName && <span className={styles.fieldError}>{fieldErrors.userName}</span>}
           </div>
-
-          {/* 이메일 (선택) */}
-          <div className={styles.formGroup}>
-            <label className={styles.label}>이메일 (선택)</label>
-            <input
-              type="email"
-              name="userEmail"
-              value={formData.userEmail}
-              onChange={handleChange}
-              placeholder="example@domain.com"
-              className={styles.input}
-            />
-            {fieldErrors.userEmail && <span className={styles.fieldError}>{fieldErrors.userEmail}</span>}
-          </div>
-
-          {/* 전화번호 (선택) */}
-          <div className={styles.formGroup}>
-            <label className={styles.label}>전화번호 (선택)</label>
-            <input
-              type="tel"
-              name="userPhone"
-              value={formData.userPhone}
-              onChange={handleChange}
-              placeholder="010-1234-5678"
-              className={styles.input}
-            />
-            {fieldErrors.userPhone && <span className={styles.fieldError}>{fieldErrors.userPhone}</span>}
-          </div>
-
-          {/* 주소 (선택) */}
-          <div className={styles.formGroup}>
-            <label className={styles.label}>주소 (선택)</label>
-            <input
-              type="text"
-              name="userAddress"
-              value={formData.userAddress}
-              onChange={handleChange}
-              placeholder="주소를 입력하세요"
-              className={styles.input}
-            />
-          </div>
-
+          
           <button type="submit" disabled={isSubmitting} className={styles.submitBtn}>
             {isSubmitting ? "가입 처리 중..." : "가입하기"}
           </button>

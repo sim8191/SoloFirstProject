@@ -7,8 +7,7 @@ public final class PasswordPolicyValidator {
     public static final int MAX_LENGTH = 32;
     
     private static final Pattern EXCLUDED_CHARS = Pattern.compile("[\\s'\"\\\\<>|`]");
-    private static final Pattern UPPERCASE = Pattern.compile("[A-Z]");
-    private static final Pattern LOWERCASE = Pattern.compile("[a-z]");
+    private static final Pattern LETTER = Pattern.compile("[A-Za-z]");
     private static final Pattern SPECIAL_CHAR = Pattern.compile("[!@#$%^&*()_+\\-=\\[\\]{};:,./?~]");
     private static final Pattern ALLOWED_CHARS = Pattern.compile(
             "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};:,./?~]+$"
@@ -45,12 +44,9 @@ public final class PasswordPolicyValidator {
             return "비밀번호는 영문, 숫자, 허용된 특수문자(!@#$%^&* 등)만 사용할 수 있습니다.";
         }
 
-        if (!UPPERCASE.matcher(password).find()) {
-            return "비밀번호에 영문 대문자를 포함해야 합니다.";
-        }
-
-        if (!LOWERCASE.matcher(password).find()) {
-            return "비밀번호에 영문 소문자를 포함해야 합니다.";
+        // 대문자 또는 소문자가 하나 이상 포함되어 있는지 검사
+        if (!LETTER.matcher(password).find()) {
+            return "비밀번호에 영문자를 하나 이상 포함해야 합니다.";
         }
 
         if (!SPECIAL_CHAR.matcher(password).find()) {

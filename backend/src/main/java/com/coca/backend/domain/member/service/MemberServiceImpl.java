@@ -2,6 +2,7 @@ package com.coca.backend.domain.member.service;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.coca.backend.domain.member.dao.MemberDao;
 import com.coca.backend.domain.member.dto.MemberSignInRequest;
@@ -20,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberDao memberDao;
+	
+	// Spring Security의 비밀번호 해싱 객체 주입
+	private final PasswordEncoder passwordEncoder;
 	
 	private static final String LOGIN_CREDENTIAL_MISMATCH_MESSAGE =
             "아이디 혹은 비밀번호가 일치하지 않습니다.";
@@ -64,12 +68,12 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
         }
 
-        // 5. DB 저장을 위한 Member 엔티티 생성 (평문 비번, 권한 1, 포인트 0)[cite: 1]
+        // 5. DB 저장을 위한 Member 엔티티 생성 (평문 비번, 권한 3(일반홰원), 포인트 0)[cite: 1]
         Member member = Member.builder()
                 .userId(request.getUserId().trim())
-                .userPwd(request.getUserPwd())
+                .userPwd(passwordEncoder.encode(request.getUserPwd()))
                 .userName(request.getUserName().trim())
-                .authority(1)    
+                .authority(3)    
                 .userPoint(0L)   
                 .build();
 
@@ -103,8 +107,11 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("탈퇴 처리된 계정입니다.");
         }
 
-        // 4. 평문 비밀번호 일치 여부 비교
-        if (!member.getUserPwd().equals(request.getUserPwd())) {
+        // 사용자가 입력한 비밀번호와 DB에 저장된 BCrypt 해시 비교
+        if (!passwordEncoder.matches(
+                request.getUserPwd(),
+                member.getUserPwd())) {
+
             throw new IllegalArgumentException(LOGIN_CREDENTIAL_MISMATCH_MESSAGE);
         }
 
