@@ -85,7 +85,6 @@
 	        USER_PHONE,
 	        USER_ENROLL_DATE,
 	        USER_DELETE_YN,
-	        LIKE_COUNT,
 	        NO_PAY_COUNT,
 	        USER_STATUS,
 	        USER_POINT
