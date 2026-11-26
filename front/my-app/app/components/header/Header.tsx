@@ -6,6 +6,7 @@ import Link from "next/link";
 import ThemeToggle from "../theme-toggle/ThemeToggle";
 import styles from "./header.module.css";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // 헤더에 표시할 회원정보 타입
 interface HeaderMember {
@@ -29,7 +30,7 @@ function getAuthorityName(authority: number): string {
 
 // 공통 헤더 컴포넌트
 export default function Header() {
-  // 현재 회원정보 (임시 테스트 데이터)
+  // 현재 회원정보
   const [member, setMember] = useState<HeaderMember | null>(null);
 
   // 드롭다운 열림 상태
@@ -40,6 +41,71 @@ export default function Header() {
 
   // 현재 페이지 경로
   const pathname = usePathname();
+
+  // 페이지 이동을 위한 Next.js Router
+  const router = useRouter();
+
+  // 로그아웃 요청 진행 상태
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  // 로그아웃 요청 처리
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+
+    try {
+      // 1. 서버에서 CSRF 토큰 가져오기
+      const csrfResponse = await fetch(
+        "http://localhost:8081/api/member/csrf",
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store",
+        }
+      );
+
+      if (!csrfResponse.ok) {
+        throw new Error("보안 토큰을 가져오지 못했습니다.");
+      }
+
+      const csrfData: { token: string } = await csrfResponse.json();
+
+      // 2. 로그아웃 요청
+      const response = await fetch(
+        "http://localhost:8081/api/member/sign-out",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "X-CSRF-TOKEN": csrfData.token,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("로그아웃에 실패했습니다.");
+      }
+
+      // 3. 로그아웃 성공 후 회원정보 초기화
+      setMember(null);
+      setIsMenuOpen(false);
+
+      // 4. 메인 페이지로 이동
+      router.replace("/main");
+      router.refresh();
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+
+      alert(
+        error instanceof Error
+          ? error.message
+          : "로그아웃 중 오류가 발생했습니다."
+      );
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   // 실제 서버 세션에서 회원정보 조회
   useEffect(() => {
@@ -208,14 +274,14 @@ export default function Header() {
 
                   <div className={styles.dropdownDivider} />
 
-                  {/* 로그아웃 API 연결 전까지 비활성화 */}
+                  {/* 로그아웃 버튼 */}
                   <button
                     type="button"
                     className={styles.logoutItem}
-                    disabled
-                    title="로그아웃 API 연결 예정"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
                   >
-                    로그아웃
+                    {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
                   </button>
                 </div>
               )}

@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./signIn.module.css";
 
 export default function SignInPage() {
+  // 페이지 이동에 사용하는 Next.js Router
+  const router = useRouter();
+  
   const [formData, setFormData] = useState({
     userId: "",
     userPwd: "",
@@ -18,10 +22,43 @@ export default function SignInPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // 로그인 요청 및 성공 시 메인 페이지 이동
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 추후 스프링 부트(/api/auth/login) 백엔드와 연동될 자리
-    console.log("로그인 요청 데이터:", formData);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8081/api/member/sign-in",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+
+        throw new Error(
+          errorData?.message || "로그인에 실패했습니다."
+        );
+      }
+
+      // 로그인 성공 후 메인 페이지 이동
+      router.push("/main");
+
+    } catch (error) {
+      console.error("로그인 실패:", error);
+
+      alert(
+        error instanceof Error
+          ? error.message
+          : "로그인 중 오류가 발생했습니다."
+      );
+    }
   };
 
   return (
