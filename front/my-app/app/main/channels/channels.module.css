@@ -1,0 +1,295 @@
+
+/* 전체 채널 페이지 */
+.page {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  background-color: var(--bg-body);
+  color: var(--text-main);
+}
+
+/* 페이지 콘텐츠 영역 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 20px 60px;
+}
+
+/* 페이지 제목 및 생성 버튼 */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.description {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* 채널 생성 버튼 */
+.createButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-accent);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.createButton span {
+  font-size: 18px;
+}
+
+.createButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.createButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 검색 영역 */
+.searchSection {
+  margin-bottom: 32px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: var(--primary-accent);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+/* 채널 목록 영역 */
+.channelSection {
+  width: 100%;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionTitle h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.count {
+  padding: 3px 9px;
+  border-radius: 20px;
+  background-color: var(--bg-sub);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* 인기순 / 최신순 정렬 */
+.sortGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sortButton,
+.sortActive {
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  background-color: var(--bg-sub);
+}
+
+.sortActive {
+  background-color: var(--bg-sub);
+  color: var(--primary-accent);
+  font-weight: 600;
+}
+
+/* 채널 카드 목록 */
+.channelGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* 채널 카드 */
+.channelCard {
+  display: flex;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  transition: border-color 0.15s ease;
+}
+
+.channelCard:hover {
+  border-color: var(--primary-accent);
+}
+
+/* 채널 썸네일 */
+.channelThumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: var(--bg-sub);
+  color: var(--primary-accent);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 채널 정보 */
+.channelInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.channelInfo h3 {
+  margin: 0 0 7px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.channelInfo p {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.subscriberCount {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* 채널이 없는 경우 */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  padding: 40px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  text-align: center;
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background-color: var(--bg-sub);
+  color: var(--text-muted);
+  font-size: 30px;
+}
+
+.emptyState h3 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+
+.emptyState p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* 태블릿 */
+@media (max-width: 900px) {
+  .channelGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 모바일 */
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 16px 40px;
+  }
+
+  .pageHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: 23px;
+  }
+
+  .channelGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    flex-wrap: wrap;
+  }
+
+  .emptyState {
+    min-height: 250px;
+  }
+}
