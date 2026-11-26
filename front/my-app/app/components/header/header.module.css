@@ -116,3 +116,13 @@
 .signUpBtn:hover {
   opacity: 0.9;
 }
+
+/* 로그인한 회원 이름 */
+.memberName {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+}
