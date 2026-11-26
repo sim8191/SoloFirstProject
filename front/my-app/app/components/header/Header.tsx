@@ -188,7 +188,7 @@ export default function Header() {
             <Link href="/main" className={styles.navLink}>
               베스트
             </Link>
-            <Link href="/channels" className={styles.navLink}>
+            <Link href="/main/channels" className={styles.navLink}>
               전체채널
             </Link>
           </nav>
