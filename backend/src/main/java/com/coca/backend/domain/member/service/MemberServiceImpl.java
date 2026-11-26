@@ -125,4 +125,25 @@ public class MemberServiceImpl implements MemberService {
                 .userPoint(member.getUserPoint())
                 .build();
     }
+
+
+	@Override
+	public MemberSignInResponse getMyInfo(String userId) {
+		// TODO Auto-generated method stub
+		Member member = memberDao.selectByUserId(userId);
+		
+		// 회원 존재 여부 및 탈퇴 상태 확인
+	    if (member == null || "Y".equalsIgnoreCase(member.getUserDeleteYn())) {
+	        throw new IllegalArgumentException("회원정보를 찾을 수 없습니다.");
+	    }
+		
+	    return MemberSignInResponse.builder()
+	            .userNo(member.getUserNo())
+	            .userId(member.getUserId())
+	            .userName(member.getUserName())
+	            .userEmail(member.getUserEmail())
+	            .authority(member.getAuthority())
+	            .userPoint(member.getUserPoint())
+	            .build();
+	}
 }

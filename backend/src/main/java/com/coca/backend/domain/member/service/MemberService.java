@@ -13,4 +13,6 @@ public interface MemberService {
 
     // 로그인 비즈니스 로직 (성공 시 유저 정보 VO 반환)
     MemberSignInResponse signIn(MemberSignInRequest request);
+
+	MemberSignInResponse getMyInfo(String userId);
 }

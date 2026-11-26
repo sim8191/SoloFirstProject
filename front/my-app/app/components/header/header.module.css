@@ -83,7 +83,9 @@
 .rightSection {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .signInBtn {
@@ -125,4 +127,156 @@
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
+}
+
+
+/* 회원 메뉴 전체 영역 */
+.memberDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* 회원 이름 클릭 버튼 */
+.memberButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 38px;
+  padding: 5px 10px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: background-color 0.15s ease;
+}
+
+.memberButton:hover {
+  background-color: var(--bg-sub);
+}
+
+.memberButton:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+/* 원형 프로필 */
+.memberAvatar {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background-color: var(--primary-accent);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* 이름 오른쪽 화살표 */
+.dropdownArrow {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* 드롭다운 메뉴 */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  width: 230px;
+  padding: 8px;
+
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+}
+
+/* 드롭다운 상단 회원정보 */
+.dropdownProfile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 10px;
+}
+
+.dropdownProfile strong {
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.dropdownProfile span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* 메뉴 사이 구분선 */
+.dropdownDivider {
+  height: 1px;
+  margin: 6px 0;
+  background-color: var(--border-color);
+}
+
+/* 드롭다운 메뉴 버튼 */
+.dropdownItem,
+.logoutItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 11px 10px;
+
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dropdownItem:hover {
+  background-color: var(--bg-sub);
+}
+
+/* 로그아웃 메뉴 */
+.logoutItem {
+  color: #ef4444;
+}
+
+.logoutItem:hover:not(:disabled) {
+  background-color: var(--bg-sub);
+}
+
+/* 로그아웃 API 연결 전 비활성화 상태 */
+.logoutItem:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
