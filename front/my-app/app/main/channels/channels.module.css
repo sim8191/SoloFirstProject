@@ -51,6 +51,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .createButton span {
@@ -291,5 +292,27 @@
 
   .emptyState {
     min-height: 250px;
+  }
+
+  /* 수정 및 삭제할 수 없는 전체 카테고리 */
+  .fixedCategory {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background-color: var(--bg-sub);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* 로그인하지 않은 경우 채널 생성 버튼 비활성화 */
+  .createButton:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* 활성화된 경우에만 호버 효과 적용 */
+  .createButton:hover:not(:disabled) {
+    opacity: 0.9;
   }
 }
