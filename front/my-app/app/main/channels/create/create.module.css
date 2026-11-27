@@ -1,0 +1,495 @@
+
+/* 채널 생성 페이지 전체 영역 */
+.page {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  background-color: var(--bg-body);
+  color: var(--text-main);
+}
+
+/* 페이지 콘텐츠 영역 */
+.container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 36px 20px 70px;
+}
+
+/* 상단 경로 */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary-accent);
+}
+
+/* 페이지 제목 */
+.pageHeader {
+  margin-bottom: 28px;
+}
+
+.pageHeader h1 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.pageHeader p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 채널 생성 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--bg-card);
+}
+
+/* 기본 입력 항목 */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 입력 항목 이름 및 글자 수 */
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.labelRow label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.labelRow > span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* 필수 입력 표시 */
+.required {
+  color: #ef4444;
+}
+
+/* 기본 텍스트 입력 */
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+/* 채널 소개 입력 */
+.textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+
+/* 입력창 포커스 */
+.input:focus,
+.textarea:focus,
+.categoryInput:focus {
+  border-color: var(--primary-accent);
+}
+
+/* 안내 문구 */
+.helpText {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 게시글 카테고리 설정 영역 */
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 26px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 카테고리 영역 제목 */
+.categoryHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.categoryHeader h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.categoryHeader p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* 등록된 카테고리 개수 */
+.categoryCount {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background-color: var(--bg-sub);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* 등록된 카테고리 목록 */
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 카테고리 한 줄 */
+.categoryItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-body);
+}
+
+/* 카테고리 순서 번호 */
+.categoryOrder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background-color: var(--bg-sub);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 카테고리 이름 */
+.categoryName {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* 카테고리 조작 버튼 영역 */
+.categoryActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* 순서 이동 버튼 */
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.iconButton:hover:not(:disabled) {
+  background-color: var(--bg-sub);
+}
+
+.iconButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* 카테고리 수정 버튼 */
+.editButton,
+.deleteButton,
+.smallButton,
+.smallPrimaryButton {
+  padding: 7px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.editButton:hover,
+.smallButton:hover {
+  background-color: var(--bg-sub);
+}
+
+/* 카테고리 삭제 버튼 */
+.deleteButton {
+  color: #ef4444;
+}
+
+.deleteButton:hover {
+  background-color: var(--bg-sub);
+}
+
+/* 이름 수정 중인 카테고리 */
+.categoryEdit {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 8px;
+}
+
+/* 카테고리 입력창 */
+.categoryInput {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+/* 카테고리 이름 수정 저장 */
+.smallPrimaryButton {
+  background-color: var(--primary-accent);
+  border-color: var(--primary-accent);
+  color: #ffffff;
+}
+
+/* 새 카테고리 추가 영역 */
+.categoryAddRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 카테고리 추가 버튼 */
+.addButton {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 7px;
+  background-color: var(--primary-accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.addButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 카테고리 없는 상태 */
+.categoryEmpty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 28px 16px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.categoryEmpty span {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 카테고리 입력 오류 */
+.errorText {
+  margin: 0;
+  color: #ef4444;
+  font-size: 12px;
+}
+
+/* 채널 생성 포인트 안내 */
+.pointBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--bg-sub);
+}
+
+/* 포인트 비용 */
+.pointRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.pointRow strong {
+  color: var(--primary-accent);
+  font-size: 19px;
+}
+
+/* 포인트 안내 문구 */
+.pointBox p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 하단 버튼 영역 */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* 취소 버튼 */
+.cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 22px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.cancelButton:hover {
+  background-color: var(--bg-sub);
+}
+
+/* 채널 생성 버튼 */
+.submitButton {
+  padding: 11px 22px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-accent);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submitButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 모바일 화면 */
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 16px 40px;
+  }
+
+  .pageHeader h1 {
+    font-size: 23px;
+  }
+
+  .form {
+    padding: 20px 16px;
+  }
+
+  .categoryItem {
+    flex-wrap: wrap;
+  }
+
+  .categoryActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .categoryEdit {
+    flex-wrap: wrap;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+  }
+
+  /* 전체 카테고리 고정 표시 */
+  .fixedCategory {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background-color: var(--bg-sub);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+  }
+}

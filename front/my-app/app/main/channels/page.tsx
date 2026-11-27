@@ -2,10 +2,11 @@
 "use client";
 
 // 채널 목록 페이지
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./channels.module.css";
 
-// 채널 목록에 사용할 데이터 타입
+// 채널 목록 데이터 타입
 interface Channel {
   channelNo: number;
   channelName: string;
@@ -15,10 +16,10 @@ interface Channel {
   createdAt: string;
 }
 
-// 백엔드 연결 전에는 실제 채널 데이터가 없음
+// 채널 목록 API 연결 전 빈 데이터
 const CHANNELS: Channel[] = [];
 
-// 채널 목록 페이지
+// 전체 채널 목록 페이지
 export default function ChannelsPage() {
   // 채널 검색어
   const [search, setSearch] = useState("");
@@ -26,7 +27,45 @@ export default function ChannelsPage() {
   // 채널 정렬 기준
   const [sort, setSort] = useState<"popular" | "recent">("popular");
 
-  // 검색 및 정렬된 채널 목록
+  // 페이지 이동을 위한 Router
+  const router = useRouter();
+
+  // 로그인 여부 (null: 확인 중)
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  // 페이지 진입 시 로그인 상태 확인
+  useEffect(() => {
+    const controller = new AbortController();
+
+    // 현재 로그인 회원 조회
+    const checkLogin = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8081/api/member/me",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store",
+            signal: controller.signal,
+          }
+        );
+
+        if (!controller.signal.aborted) {
+          setIsLoggedIn(response.ok);
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setIsLoggedIn(false);
+        }
+      }
+    };
+
+    void checkLogin();
+
+    return () => controller.abort();
+  }, []);
+
+  // 검색어와 정렬 기준을 적용한 목록
   const filteredChannels = useMemo(() => {
     const keyword = search.trim().toLowerCase();
 
@@ -50,7 +89,7 @@ export default function ChannelsPage() {
   return (
     <main className={styles.page}>
       <div className={styles.container}>
-        {/* 페이지 제목 및 채널 생성 */}
+        {/* 페이지 제목 및 채널 생성 이동 */}
         <section className={styles.pageHeader}>
           <div>
             <h1 className={styles.title}>전체 채널</h1>
@@ -59,12 +98,19 @@ export default function ChannelsPage() {
             </p>
           </div>
 
-          {/* 채널 생성 페이지 구현 후 연결 */}
+          {/* 로그인 회원만 채널 생성 페이지 이동 가능 */}
           <button
             type="button"
             className={styles.createButton}
-            disabled
-            title="채널 생성 기능 준비 중"
+            disabled={isLoggedIn !== true}
+            title={
+              isLoggedIn === null
+                ? "로그인 상태 확인 중"
+                : !isLoggedIn
+                  ? "로그인 후 채널을 만들 수 있습니다."
+                  : "채널 생성 페이지로 이동"
+            }
+            onClick={() => router.push("/main/channels/create")}
           >
             <span>＋</span>
             채널 만들기
@@ -76,14 +122,14 @@ export default function ChannelsPage() {
           <input
             type="search"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
             placeholder="채널 이름이나 설명 검색..."
             className={styles.searchInput}
             aria-label="채널 검색"
           />
         </section>
 
-        {/* 채널 목록 도구 */}
+        {/* 채널 목록 */}
         <section className={styles.channelSection}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionTitle}>
@@ -93,6 +139,7 @@ export default function ChannelsPage() {
               </span>
             </div>
 
+            {/* 채널 정렬 */}
             <div className={styles.sortGroup}>
               <button
                 type="button"
@@ -120,7 +167,7 @@ export default function ChannelsPage() {
             </div>
           </div>
 
-          {/* 채널 목록 또는 빈 화면 */}
+          {/* 채널이 없거나 검색 결과가 없는 경우 */}
           {filteredChannels.length === 0 ? (
             <div className={styles.emptyState}>
               <div className={styles.emptyIcon}>▤</div>
@@ -138,6 +185,7 @@ export default function ChannelsPage() {
               </p>
             </div>
           ) : (
+            /* 등록된 채널 카드 */
             <div className={styles.channelGrid}>
               {filteredChannels.map((channel) => (
                 <article
@@ -161,8 +209,10 @@ export default function ChannelsPage() {
                   <div className={styles.channelInfo}>
                     <h3>{channel.channelName}</h3>
                     <p>{channel.description}</p>
+
                     <span className={styles.subscriberCount}>
-                      구독자 {channel.subscriberCount.toLocaleString()}명
+                      구독자{" "}
+                      {channel.subscriberCount.toLocaleString()}명
                     </span>
                   </div>
                 </article>
